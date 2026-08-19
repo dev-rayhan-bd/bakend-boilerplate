@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express';
+import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import path from 'path';
@@ -85,10 +86,16 @@ app.get('/health', (_req: Request, res: Response) => {
 
 /**
  * 8. API Documentation (Swagger)
+ * Helmet CSP is disabled for this route because Swagger UI requires inline scripts/styles.
  */
 const file = fs.readFileSync(path.resolve(__dirname, './swagger.yaml'), 'utf8');
 const swaggerDocument = YAML.parse(file);
-app.use('/api/docs', swaggerUi.serve as any, swaggerUi.setup(swaggerDocument) as any);
+app.use(
+  '/api/docs',
+  helmet({ contentSecurityPolicy: false }) as any,
+  swaggerUi.serve as any,
+  swaggerUi.setup(swaggerDocument) as any,
+);
 
 /**
  * 9. Application API Routes

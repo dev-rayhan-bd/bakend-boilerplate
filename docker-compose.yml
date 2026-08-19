@@ -9,18 +9,12 @@ services:
     restart: always
     ports:
       - "5000:5000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
-      - PORT=5000
       - DATABASE_URL=mongodb://mongodb:27017/k10_football
       - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - JWT_ACCESS_SECRET=b7bf13bed1c3924e58f39cdb7885804349412fe504d7120ad4a2513c75775043ec8c8825560391dcd222c51876f9e9fc356498a73d5cf01a92f3787d2912658e
-      - JWT_ACCESS_EXPIRES_IN=1d
-      - JWT_REFRESH_SECRET=31d05504c4e58536083bef9de27debaddd5f9458450dbf55ca7168a7f1600005dce4a9af602e3bbb8693d7d29089fa28cd7501498751de96ee276129b8b80668
-      - JWT_REFRESH_EXPIRES_IN=365d
-      - BCRYPT_SALT_ROUNDS=12
-      - LOG_LEVEL=info
     depends_on:
       mongodb:
         condition: service_healthy
