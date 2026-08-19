@@ -12,14 +12,21 @@ router.post(
   '/register',
   authRateLimiter,
   validateRequest(UserValidation.createUserZodSchema),
-  userController.register
+  userController.register,
 );
 
 router.post(
   '/login',
   authRateLimiter,
   validateRequest(UserValidation.loginUserZodSchema),
-  userController.login
+  userController.login,
+);
+
+router.post(
+  '/verify-otp',
+  authRateLimiter,
+  validateRequest(UserValidation.verifyOtpZodSchema),
+  userController.verifyOtp,
 );
 
 // Protected User Profile
@@ -35,7 +42,7 @@ router.patch(
   '/:id',
   auth('ADMIN', 'SUPER_ADMIN'),
   validateRequest(UserValidation.updateUserZodSchema),
-  userController.update
+  userController.update,
 );
 router.delete('/:id', auth('SUPER_ADMIN'), userController.delete);
 

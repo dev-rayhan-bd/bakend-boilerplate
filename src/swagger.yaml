@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: K10 Football Academy Platform API
+  version: 1.0.0
+  description: API documentation for the K10 Football Academy Platform Backend
+servers:
+  - url: http://localhost:5000
+    description: Development server
+paths:
+  /:
+    get:
+      summary: API Root
+      description: Returns a welcome message and API base path
+      responses:
+        '200':
+          description: Welcome message
+  /health:
+    get:
+      summary: Health Check
+      description: Returns the health status of the API
+      responses:
+        '200':
+          description: Health status with uptime

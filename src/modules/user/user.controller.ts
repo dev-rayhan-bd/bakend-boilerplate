@@ -28,6 +28,16 @@ export class UserController {
     });
   });
 
+  verifyOtp = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const { email, otp } = req.body;
+    await this.service.verifyOtp(email, otp);
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Email verified successfully',
+    });
+  });
+
   getProfile = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.userId;
     const user = await this.service.getUserById(userId);

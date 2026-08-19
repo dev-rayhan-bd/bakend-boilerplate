@@ -1,4 +1,8 @@
 import express, { Application, Request, Response } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+import YAML from 'yaml';
 import pinoHttp from 'pino-http';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -80,7 +84,14 @@ app.get('/health', (_req: Request, res: Response) => {
 });
 
 /**
- * 8. Application API Routes
+ * 8. API Documentation (Swagger)
+ */
+const file = fs.readFileSync(path.resolve(__dirname, './swagger.yaml'), 'utf8');
+const swaggerDocument = YAML.parse(file);
+app.use('/api/docs', swaggerUi.serve as any, swaggerUi.setup(swaggerDocument) as any);
+
+/**
+ * 9. Application API Routes
  */
 app.use('/api/v1', applicationRoutes);
 

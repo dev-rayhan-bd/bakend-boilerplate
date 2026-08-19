@@ -17,6 +17,11 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default('365d'),
   BCRYPT_SALT_ROUNDS: z.coerce.number().default(12),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  SMTP_HOST: z.string().min(1, 'SMTP_HOST is required'),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_USER: z.string().min(1, 'SMTP_USER is required'),
+  SMTP_PASS: z.string().min(1, 'SMTP_PASS is required'),
+  SMTP_FROM: z.string().min(1, 'SMTP_FROM is required'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
