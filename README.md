@@ -1,6 +1,6 @@
-#  Backend  Boilerplate 
+# Production-Ready Node.js Backend Boilerplate
 
-A high-performance, enterprise-ready, modular RESTful API , built using **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Redis**, and **BullMQ**.
+A high-performance, enterprise-ready, modular RESTful API boilerplate built using **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Redis**, and **BullMQ**.
 
 ---
 
@@ -18,6 +18,13 @@ A high-performance, enterprise-ready, modular RESTful API , built using **Node.j
   - **BullMQ Background Workers** for asynchronous task execution (e.g., email dispatch & video processing).
 - **Database**:
   - **MongoDB** with **Mongoose ODM** for reliable schema modelling and indexes.
+- **Developer Experience & CI/CD**:
+  - **ESLint v9 (Flat Config)** & **Prettier** for code formatting and linting.
+  - **Husky** & **Lint-staged** for pre-commit hooks to ensure code quality.
+  - **Jest** pre-configured for TDD and unit testing.
+  - **GitHub Actions** ready for CI/CD pipelines.
+- **API Documentation**:
+  - Auto-generated interactive **Swagger UI** for API exploration.
 - **Logging & Monitoring**:
   - **Pino & Pino-HTTP** for fast JSON logging with request tracking.
 - **Containerization**:
@@ -38,13 +45,15 @@ A high-performance, enterprise-ready, modular RESTful API , built using **Node.j
 | **Logger** | Pino, Pino-HTTP |
 | **Validation** | Zod |
 | **Containerization** | Docker, Docker Compose |
+| **Code Quality** | ESLint, Prettier, Husky, Lint-Staged |
+| **Testing** | Jest, Supertest |
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-k10-football-backend/
+node-backend-boilerplate/
 ├── src/
 │   ├── config/              # Environment & service configurations (Redis, Rate Limits, DB)
 │   ├── errors/              # Centralized error classes & custom error handlers (Zod, Mongoose)
@@ -62,7 +71,8 @@ k10-football-backend/
 │   └── server.ts            # Entry point (Server listener & DB/Redis setup)
 ├── Dockerfile               # Multi-stage production Docker build
 ├── docker-compose.yml       # Docker Compose setup for App, MongoDB, and Redis
-├── .env.example             # Template for environment variables
+├── eslint.config.mjs        # ESLint Flat Config rules
+├── jest.config.js           # Jest testing framework config
 ├── package.json             # NPM dependencies & scripts
 └── tsconfig.json            # TypeScript compiler configuration
 ```
@@ -86,7 +96,7 @@ Clone the repository and install the dependencies:
 
 ```bash
 git clone <repository-url>
-cd boilerplate-backend
+cd node-backend-boilerplate
 yarn install
 ```
 
@@ -108,7 +118,7 @@ NODE_ENV=development
 PORT=5000
 
 # Database Configuration
-DATABASE_URL=mongodb://127.0.0.1:27017/k10_football
+DATABASE_URL=mongodb://127.0.0.1:27017/my_database_name
 
 # Redis Configuration
 REDIS_HOST=127.0.0.1
@@ -120,6 +130,13 @@ JWT_ACCESS_SECRET=your_jwt_access_secret_key_here
 JWT_ACCESS_EXPIRES_IN=1d
 JWT_REFRESH_SECRET=your_jwt_refresh_secret_key_here
 JWT_REFRESH_EXPIRES_IN=365d
+
+# SMTP Configuration (For Email/OTP)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+SMTP_FROM=your_email@gmail.com
 
 # Security & Encryption
 BCRYPT_SALT_ROUNDS=12
@@ -162,6 +179,7 @@ yarn dev
 ```
 
 The server will be available at `http://localhost:5000`.
+You can view the interactive **Swagger UI Documentation** at `http://localhost:5000/api/docs`.
 
 ---
 
@@ -172,19 +190,10 @@ The server will be available at `http://localhost:5000`.
 | `yarn dev` | Starts the server in development mode with `ts-node-dev` |
 | `yarn build` | Compiles TypeScript files to output directory (`/dist`) |
 | `yarn start` | Runs compiled production JavaScript files from `/dist` |
-| `yarn lint` | Runs TypeScript type checking without emitting files |
-
----
-
-## 🌐 API Endpoint Summary
-
-### Base Routes
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/` | API Welcome message & endpoint summary |
-| `GET` | `/health` | Server Health Check & uptime status |
-| `GET` | `/api/v1/users` | Users module route base |
+| `yarn lint` | Runs ESLint for code quality checks |
+| `yarn lint:fix` | Automatically fixes ESLint errors |
+| `yarn format` | Runs Prettier to format codebase |
+| `yarn test` | Runs Jest unit tests |
 
 ---
 
@@ -201,7 +210,7 @@ The server will be available at `http://localhost:5000`.
 }
 ```
 
-### Standard Error Response
+### Standard Error Response (Global Error Handler)
 
 ```json
 {
@@ -213,7 +222,8 @@ The server will be available at `http://localhost:5000`.
       "path": "/unknown-path",
       "message": "The requested route does not exist on this server."
     }
-  ]
+  ],
+  "stack": "Error stack trace here (Only in Development Mode)"
 }
 ```
 
@@ -221,4 +231,4 @@ The server will be available at `http://localhost:5000`.
 
 ## 📄 License
 
-This project is proprietary and confidential to **Rayhan Shorker**.
+This boilerplate project is open-source and available under the [MIT License](LICENSE).
